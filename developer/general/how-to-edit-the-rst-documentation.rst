@@ -433,9 +433,9 @@ Creating a Python environment with poetry
 
    .. hint::
 
-      If you would like to avoid prefixing commands with :program:`poetry run`, you can source the virtual environment with ``eval $(poetry env activate)`` on every new shell session. Note that when enabling ``virtualenvs.in-project``, you will find the virtual environment in the project root directory undre ``.venv``, same place the ``venv`` instructions uses.
+      If you would like to avoid prefixing commands with :program:`poetry run`, you can source the virtual environment with ``eval $(poetry env activate)`` on every new shell session. Note that when enabling ``virtualenvs.in-project``, you will find the virtual environment in the project root directory under ``.venv``, same place the ``venv`` instructions uses.
 
-Linting the documentation with peotry
+Linting the documentation with poetry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -491,6 +491,42 @@ Building the documentation with poetry
 
       $ poetry run sphinx-autobuild . _build/html
 
+
+Build environment variables
+---------------------------
+
+Part of the build process is not triggered by the default build, to speed up the local builds. You might want to define some environment variables in order to get something closer to the official documentation website.
+
+Display the "last edition" in the footer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you want to build the documentation and print the last edition datetime in the footer, set :envvar:`QUBES_DOC_FULL_BUILD` to `True`. A :program:`git` command will be issued for each page. A timeout is set, in case :program:`git` takes too much time. To change the value of this timeout, use :envvar:`QUBES_DOC_LAST_EDITION_TIMEOUT`. This is automatically handled on ReadTheDocs.
+
+Display ".onion available" button in Tor Browser
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the documentation only tells Tor Browser that an .onion alternative is available when building the ``latest`` branch and ``en`` language on ReadTheDocs. You can force this behavior by setting:
+
+* `READTHEDOCS_VERSION <https://docs.readthedocs.com/platform/stable/reference/environment-variables.html#envvar-READTHEDOCS_VERSION>`__ to ``latest``
+* and `READTHEDOCS_LANGUAGE <https://docs.readthedocs.com/platform/stable/reference/environment-variables.html#envvar-READTHEDOCS_LANGUAGE>`__ to ``en``
+
+Build variables reference
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. envvar:: QUBES_DOC_FULL_BUILD
+
+   :Default value: empty
+   :Allowed values: ``True``, ``on``, ``1``
+   :Case sensitive: no
+
+   Build the documentation with full features: if any of the allowed values is set, "last edition" will be displayed in the footer.
+
+.. envvar:: QUBES_DOC_LAST_EDITION_TIMEOUT
+
+   :Default value: ``1``
+   :Allowed values: any integer
+
+   Set the timeout of :program:`git` commands during the build process, in seconds.
 
 Editor
 ------
